@@ -1,4 +1,4 @@
 # IntelligentCarpet
 
-#Quick Start
+## Quick Start
 git clone https://github.com/yiyueluo/intelligentCarpet
