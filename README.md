@@ -1,4 +1,4 @@
-# IntelligentCarpet
+# IntelligentCarpet: Inferring 3D Human Pose from Tactile Signals
 
 ## Dataset
 Dataset can be found here: https://www.dropbox.com/sh/rzuzasgf6dntnrb/AACsWKeXpCOzZyYlan1cmNiha?dl=0
