@@ -2,4 +2,4 @@
 
 ##Quick Start
 
-git clone https://github.com:yiyueluo/IntelligentCarpet.git
+git clone https://github.com/yiyueluo/intelligentCarpet
