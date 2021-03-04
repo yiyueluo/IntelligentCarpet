@@ -18,7 +18,7 @@ conda activate p36
 ## Demo
 Checkpoints can be found here: https://www.dropbox.com/sh/9t13gp11wgw8vhd/AACG-woYPVSr_L4UBof5FZnoa?dl=0 
 
-To visualize predictions, set $$--exp_image$$
+To visualize predictions, set ''--exp_image''
 
 
 ## Contact
