@@ -19,7 +19,7 @@ from threeD_viz_video import generateVideo
 from threeD_viz_image import generateImage
 
 parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('--exp_dir', type=str, default='./', help='Experiment path')
+parser.add_argument('--exp_dir', type=str, default='./train', help='Experiment path')
 parser.add_argument('--exp', type=str, default='singlePeople', help='Name of experiment')
 parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
 parser.add_argument('--batch_size', type=int, default=32, help='Batch size,128')
@@ -142,8 +142,8 @@ if not args.eval:
 if args.eval:
     test_path = args.test_dir
     mask = []
-    # test_dataset = sample_data(test_path, args.window, mask, args.subsample)
-    test_dataset = sample_data_diffTask(test_path, args.window, args.subsample) # use this line for the diffTask test set
+    test_dataset = sample_data(test_path, args.window, mask, args.subsample)
+    # test_dataset = sample_data_diffTask(test_path, args.window, args.subsample) # use this line for the diffTask test set
     test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8)
     print (len(test_dataset))
 
