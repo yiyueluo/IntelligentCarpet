@@ -4,10 +4,12 @@
 
 
 ## Quick Start
+````
 git clone https://github.com/yiyueluo/intelligentCarpet  
 cd IntelligentCarpet   
 conda env create -f environment.yml   
 conda activate p36   
+````
 
 ## Demo
 
