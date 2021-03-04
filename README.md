@@ -18,9 +18,9 @@ conda activate p36
 ## Demo
 Checkpoints can be found here: https://www.dropbox.com/sh/9t13gp11wgw8vhd/AACG-woYPVSr_L4UBof5FZnoa?dl=0 
 
-To visualize predictions, set '--exp_image' or '--exp_video'.
-To export L2 distance between predicted skeleton and groundtruth , set '--exp_L2'.
-To export data on tactile input, groundtruth keypoint, grondtruth heatmap, predicted keypoint, predicted heatmap, set '--exp_data'.
+To visualize predictions, set '--exp_image' or `--exp_video`.     
+To export L2 distance between predicted skeleton and groundtruth , set `--exp_L2`.   
+To export data on tactile input, groundtruth keypoint, grondtruth heatmap, predicted keypoint, predicted heatmap, set `--exp_data`.     
 
 
 ## Contact
