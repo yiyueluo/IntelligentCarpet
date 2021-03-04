@@ -11,7 +11,7 @@ Dataset can be found here: https://www.dropbox.com/sh/rzuzasgf6dntnrb/AACsWKeXpC
 
 * __tactile_keypoint_data.zip__ contains the normalized tactile frames from the carpet and the triangulated and optimized 3D keypoint position in real-world frame (unit: cm)
 * __singlePerson_test.zip__ contains the test set for single person pose estimation 
-* __singlePerson_test_diffTask.zip__ contains the test set for single person pose estimation, which is arranged by individual tasks
+* __singlePerson_test_diffTask.zip__ contains the test set for single person pose estimation, which is arranged by individual tasks (Note: use `sample_data_diffTask` to load data)
 
 ## Quick Start
 ````
