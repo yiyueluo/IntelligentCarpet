@@ -6,13 +6,6 @@
 
 __CVPR 2021__ [\[Project Page\]]() [\[Paper\]]() [\[Video\]]()
 
-## Dataset
-Full training/validation dataset can be downloaded
-
-* __tactile_keypoint_data__ contains the normalized tactile frames from the carpet and the triangulated and optimized 3D keypoint position in real-world frame (unit: cm)
-* Use __singlePerson_train_dataset__ and __singlePerson_val_dataset__ for epxeriments on single person
-* Use __twoPeople_train_dataset__ and __twoPeople_val_dataset__ for experiemnts on multi people
-
 ## Quick Start
 ````
 git clone https://github.com/yiyueluo/intelligentCarpet  
@@ -20,6 +13,14 @@ cd IntelligentCarpet
 conda env create -f environment.yml   
 conda activate p36   
 ````
+
+## Dataset
+Full training/validation dataset can be downloaded
+
+* __tactile_keypoint_data__ contains the normalized tactile frames from the carpet and the triangulated and optimized 3D keypoint position in real-world frame (unit: cm)
+* Use __singlePerson_train_dataset__ and __singlePerson_val_dataset__ for epxeriments on single person
+* Use __twoPeople_train_dataset__ and __twoPeople_val_dataset__ for experiemnts on multi people
+
 
 ## Demo
 Checkpoints and test dataset can be found here: https://www.dropbox.com/sh/5l0lm4po64xf6jd/AACuMt_oGy99Beyz_IMeknQ6a?dl=0
