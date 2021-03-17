@@ -9,6 +9,9 @@ __CVPR 2021__ [\[Project Page\]]() [\[Paper\]]() [\[Video\]]()
 ## Dataset
 Full training/validation dataset can be downloaded
 
+* __tactile_keypoint_data__ contains the normalized tactile frames from the carpet and the triangulated and optimized 3D keypoint position in real-world frame (unit: cm)
+* __singlePerson_train_dataset__ and __singlePerson_val_dataset__ 
+* __twoPeople_train_dataset__ and __twoPeople_val_dataset__ 
 
 ## Quick Start
 ````
