@@ -4,7 +4,7 @@
 
 [Yiyue Luo](https://yyueluo.com/), [Yunzhu Li](http://people.csail.mit.edu/liyunzhu/), [Michael Foshey](https://www.csail.mit.edu/person/michael-foshey), [Wan Shou](https://showone90.wixsite.com/show), [Pratyusha Sharma](https://pratyushasharma.github.io/), [Tomás Palacios](http://www-mtl.mit.edu/wpmu/tpalacios/), [Antonio Torralba](https://groups.csail.mit.edu/vision/torralbalab/), and [Wojciech Matusik](https://cdfg.csail.mit.edu/wojciech)  
 
-__CVPR 2021__ [\[Project Page\]]() [\[Paper\]]() [\[Video\]]()
+__CVPR 2021__ [\[Project Page\]](http://intcarpet.csail.mit.edu/) [\[Paper\]](http://intcarpet.csail.mit.edu/) [\[Video\]](https://www.youtube.com/watch?v=U6svj37h2U4&ab_channel=LuoYiyue)
 
 ## Quick Start
 ````
@@ -41,8 +41,6 @@ To export data on tactile input, groundtruth keypoint, grondtruth heatmap, predi
 
 Note: pay attention to the used checkpoints `--ckpts`, experiment path `--exp_dir` and test data path `--test_dir`.
 
-## Example results
-[![Everything Is AWESOME](https://img.youtube.com/vi/2RNonMxmNVc/0.jpg)](https://youtu.be/2RNonMxmNVc?t=35s "Everything Is AWESOME")
 
 ## Contact
 If you have any questions about the paper or the codebase, please feel free to contact yiyueluo@mit.edu.
