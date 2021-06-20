@@ -29,7 +29,7 @@ Checkpoints and test dataset can be found here: https://www.dropbox.com/sh/5l0lm
 * __singlePerson_test.zip__ contains the test set for single person pose estimation 
 * __singlePerson_test_diffTask.zip__ contains the test set for single person pose estimation, which is arranged by individual tasks (Note: use `sample_data_diffTask` to load data) 
 
-Download the desired test set to "./train/" and unzip to its correspondng folder. 
+Download the checkpoint and desired test set to "./train/" and unzip to its correspondng folder. 
 
 ```
 python ./train/threeD_train_final.py
