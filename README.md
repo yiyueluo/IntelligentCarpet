@@ -42,7 +42,7 @@ To export data on tactile input, groundtruth keypoint, grondtruth heatmap, predi
 Note: pay attention to the used checkpoints `--ckpts`, experiment path `--exp_dir` and test data path `--test_dir`.
 
 ## Example results
-
+[![SC2 Video](doc/SC2_youtube.PNG)](https://www.youtube.com/watch?v=--2RNonMxmNVc "Single person pose estimation.")
 
 ## Contact
 If you have any questions about the paper or the codebase, please feel free to contact yiyueluo@mit.edu.
