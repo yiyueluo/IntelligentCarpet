@@ -42,7 +42,7 @@ To export data on tactile input, groundtruth keypoint, grondtruth heatmap, predi
 Note: pay attention to the used checkpoints `--ckpts`, experiment path `--exp_dir` and test data path `--test_dir`.
 
 ## Example results
-[![Everything Is AWESOME](http://i.imgur.com/Ot5DWAW.png)](https://youtu.be/2RNonMxmNVc?t=35s "Everything Is AWESOME")
+[![Everything Is AWESOME](https://img.youtube.com/vi/2RNonMxmNVc/0.jpg)](https://youtu.be/2RNonMxmNVc?t=35s "Everything Is AWESOME")
 
 ## Contact
 If you have any questions about the paper or the codebase, please feel free to contact yiyueluo@mit.edu.
