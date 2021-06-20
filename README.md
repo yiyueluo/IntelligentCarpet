@@ -41,5 +41,8 @@ To export data on tactile input, groundtruth keypoint, grondtruth heatmap, predi
 
 Note: pay attention to the used checkpoints `--ckpts`, experiment path `--exp_dir` and test data path `--test_dir`.
 
+## Example results
+
+
 ## Contact
 If you have any questions about the paper or the codebase, please feel free to contact yiyueluo@mit.edu.
