@@ -15,12 +15,33 @@ conda activate p36
 ````
 
 ## Dataset
-Full training/validation dataset can be downloaded
+<!-- Full training/validation dataset can be downloaded
 
 * __tactile_keypoint_data__ contains the normalized tactile frames from the carpet and the triangulated and optimized 3D keypoint position in real-world frame (unit: cm)
 * Use __singlePerson_train_dataset__ and __singlePerson_val_dataset__ for epxeriments on single person
 * Use __twoPeople_train_dataset__ and __twoPeople_val_dataset__ for experiemnts on multi people
+ -->
+ 
+Raw dataset on 10 people recorded on three days (including camera calibration, which happens once per day): 
+https://www.dropbox.com/sh/g3l4jdablczffj3/AACuFy9E2YonQdNjUu4beClta?dl=0
 
+In each dataset folder, there are:
+1. raw tactile signal (including timestamp) on 9 pieces of tiles: touch#.hdf5 
+2. aligned tactile signal as 96x96 matrix: touch_aligned.p
+3. normalized tactile signal : touch_normalized.p
+4. video recorded by 2 calibrated cameras: webcam#.mp4, and corresponding timestamps: webcam#.txt
+5. visualization with Openpose output (only in selective folder for demonstration): webcam#\_openpose.avi
+6. 21 keypoints output by Openpose from each camera: pt_webcam#.mat
+7. triangulated 21 keypoints: keypoint3D.mat
+8. transformed 3D keypoints corresponding to the carpet perspective: keypoint_transform.p, and the positions of the carpet: tile_transform.p
+9. optimized 3D keypoints: keypoint_refined.p
+
+In each calibration folder, there are:
+1. calibration parameters for each camera: webcam#\_intrinsic.mat, webcam#\_extrinsic.mat, webcam#\_dis.mat
+2. carpet positions corresponding to each camera
+
+The important files are: touch_normalized.p, keypoint_refined.p (they are aligned with timestamps).
+Use heatmap_from_keypoint3D.py to generate GT 3D heatmap (20x20x18).
 
 ## Demo
 Checkpoints and test dataset can be found here: https://www.dropbox.com/sh/5l0lm4po64xf6jd/AACuMt_oGy99Beyz_IMeknQ6a?dl=0
