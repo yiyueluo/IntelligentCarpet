@@ -6,8 +6,8 @@ import numpy as np
 import io, os
 import argparse
 from torch.utils.data import Dataset, DataLoader
-from threeD_model_final import SpatialSoftmax3D, tile2openpose_conv3d
-from threeD_dataLoader_batch import sample_data
+from MIT_model import tile2openpose_conv3d
+from MIT_dataLoader_batch import sample_data
 from threeD_dataLoader import sample_data_diffTask
 import pickle
 import torch
@@ -63,41 +63,6 @@ def get_keypoint_spatial_dis(keypoint_GT, keypoint_pred):
     # mean = np.reshape(np.mean(dis, axis=0), (21,3))
     return dis
 
-def remove_small(heatmap, threshold, device):
-    z = torch.zeros(heatmap.shape[0], heatmap.shape[1], heatmap.shape[2], heatmap.shape[3], heatmap.shape[4]).to(device)
-    heatmap = torch.where(heatmap<threshold, z, heatmap)
-    return heatmap
-
-def check_link(min, max, keypoint, device):
-
-    # print (torch.max(max), torch.min(min))
-
-    BODY_25_pairs = np.array([
-    [1, 8], [1, 2], [1, 5], [2, 3], [3, 4], [5, 6], [6, 7], [8, 9], [9, 10], [10, 11], [8, 12],
-    [12, 13], [13, 14], [1, 0], [14, 15], [15, 16], [14, 17], [11, 18], [18, 19], [11, 20]])
-
-    # o = torch.ones(keypoint.shape[0], keypoint.shape[1], keypoint.shape[2]).to(device)
-    # keypoint = torch.where(torch.isnan(keypoint), o, keypoint)
-
-    keypoint_output = torch.ones(keypoint.shape[0],20).to(device)
-
-    for f in range(keypoint.shape[0]):
-        for i in range(20):
-
-            a = keypoint[f, BODY_25_pairs[i, 0]]
-            b = keypoint[f, BODY_25_pairs[i, 1]]
-            s = torch.sum((a - b)**2)
-
-            if s < min[i]:
-                keypoint_output[f,i] = min[i] -s
-            elif s > max[i]:
-                keypoint_output[f,i] = s - max[i]
-            else:
-                keypoint_output[f,i] = 0
-
-    return keypoint_output
-
-
 if not os.path.exists(args.exp_dir + 'ckpts'):
     os.makedirs(args.exp_dir + 'ckpts')
 
@@ -115,14 +80,6 @@ if not os.path.exists(args.exp_dir + 'predictions'):
 # device = 'cuda:0' if use_gpu else 'cpu'
 use_gpu = True
 device = 'cuda:1'
-
-if args.linkLoss:
-    link_min = pickle.load(open(args.exp_dir + 'link_min.p', "rb"))
-    link_max = pickle.load(open(args.exp_dir + 'link_max.p', "rb"))
-
-    link_min = torch.tensor(link_min, dtype=torch.float, device=device)
-    link_max = torch.tensor(link_max, dtype=torch.float, device=device)
-
 
 if not args.eval:
     train_path = args.exp_dir + 'exp1_train_dataset_more'
@@ -185,7 +142,7 @@ if __name__ == '__main__':
         print("Now running on val set")
         model.eval()
         avg_val_loss = []
-        avg_val_keypoint_l2_loss = []
+        avg_val_sensor_l2_loss = []
 
         tactile_GT = np.empty((1,96,96))
 
@@ -208,18 +165,8 @@ if __name__ == '__main__':
             with torch.set_grad_enabled(False):
                 sensor_out = model(tactile, device)
 
-                heatmap_out = model(tactile, device)
-                heatmap_out = heatmap_out.reshape(-1, 21, 20, 20, 18)
-                heatmap_transform = remove_small(heatmap_out.transpose(2,3), 1e-2, device)
-                keypoint_out, heatmap_out2 = softmax(heatmap_transform)
-
-            loss_heatmap = torch.mean((heatmap_transform - heatmap)**2 * (heatmap + 0.5) * 2) * 1000
-            heatmap_out = heatmap_transform
-
-            if i_batch % 100 == 0 and i_batch != 0:
-                print (i_batch, loss_heatmap)
-            # loss = loss_heatmap
-            # print (loss)
+            #loss_heatmap = torch.mean((heatmap_transform - heatmap)**2 * (heatmap + 0.5) * 2) * 1000
+            #heatmap_out = heatmap_transform
 
             '''log data for L2 distance'''
             if args.exp_L2:
@@ -248,9 +195,9 @@ if __name__ == '__main__':
         if args.exp_L2:
             dis = np.linalg.norm(sensor_GT_log-sensor_pred_log)
 
-            dis = get_keypoint_spatial_dis(keypoint_GT_log[1:,:,:], keypoint_pred_log[1:,:,:])
+            #dis = get_keypoint_spatial_dis(keypoint_GT_log[1:,:,:], keypoint_pred_log[1:,:,:])
             pickle.dump(dis, open(args.exp_dir + 'predictions/L2/'+ args.ckpt + '_dis.p', "wb"))
-            print ("keypoint_dis_saved:", dis.shape)
+            print ("sensor_dis_saved:", dis.shape)
 
 
     train_loss_list = np.zeros((1))
@@ -311,7 +258,7 @@ if __name__ == '__main__':
                 print("Now running on val set")
                 model.train(False)
 
-                keypoint_l2 = []
+                sensor_l2 = []
 
                 bar = ProgressBar(max_value=len(val_dataloader))
                 for i_batch, sample_batched in bar(enumerate(val_dataloader, 0)):
