@@ -19,7 +19,7 @@ from threeD_viz_video import generateVideo
 from threeD_viz_image import generateImage
 
 parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('--exp_dir', type=str, default='./train', help='Experiment path')
+parser.add_argument('--exp_dir', type=str, default='/home/shlee/IntelligentCarpet/train/', help='Experiment path') #./train
 parser.add_argument('--exp', type=str, default='singlePeople', help='Name of experiment')
 parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
 parser.add_argument('--batch_size', type=int, default=32, help='Batch size,128')
@@ -29,8 +29,8 @@ parser.add_argument('--subsample', type=int, default=1, help='subsample tile res
 parser.add_argument('--linkLoss', type=bool, default=False, help='use link loss')
 parser.add_argument('--epoch', type=int, default=500, help='The time steps you want to subsample the dataset to,500')
 parser.add_argument('--ckpt', type=str, default ='singlePerson_0.0001_10_best', help='loaded ckpt file')
-parser.add_argument('--eval', type=bool, default=True, help='Set true if eval time')
-parser.add_argument('--test_dir', type=str, default ='./singlePerson_test/', help='test data path')
+parser.add_argument('--eval', type=bool, default=False, help='Set true if eval time') #True
+parser.add_argument('--test_dir', type=str, default ='./test/', help='test data path') #singlePerson_test
 parser.add_argument('--exp_image', type=bool, default=False, help='Set true if export predictions as images')
 parser.add_argument('--exp_video', type=bool, default=False, help='Set true if export predictions as video')
 parser.add_argument('--exp_data', type=bool, default=False, help='Set true if export predictions as raw data')
@@ -79,16 +79,16 @@ if not os.path.exists(args.exp_dir + 'predictions'):
 # use_gpu = torch.cuda.is_available()
 # device = 'cuda:0' if use_gpu else 'cpu'
 use_gpu = True
-device = 'cuda:1'
+device = 'cuda:0'
 
 if not args.eval:
-    train_path = args.exp_dir + 'exp1_train_dataset_more'
+    train_path = args.exp_dir + '/test/'#'exp1_train_dataset_more'
     mask = []
     train_dataset = sample_data(train_path, args.window, mask, args.subsample)
     train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size,shuffle=True, num_workers=8)
     print (len(train_dataset))
 
-    val_path = args.exp_dir + 'exp1_val_dataset_more'
+    val_path = args.exp_dir + '/test/'#'exp1_val_dataset_more'
     mask = []
     val_dataset = sample_data(val_path, args.window, mask, args.subsample)
     val_dataloader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8)
@@ -109,10 +109,10 @@ if __name__ == '__main__':
     np.random.seed(0)
     torch.manual_seed(0)
     model = tile2openpose_conv3d(args.window) # model
-    softmax = SpatialSoftmax3D(20, 20, 18, 21)
+    #softmax = SpatialSoftmax3D(20, 20, 18, 21)
 
     model.to(device)
-    softmax.to(device)
+    #softmax.to(device)
 
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weightdecay)
     scheduler = ReduceLROnPlateau(optimizer, 'min', factor=0.8, patience=5, verbose=True)
@@ -144,7 +144,7 @@ if __name__ == '__main__':
         avg_val_loss = []
         avg_val_sensor_l2_loss = []
 
-        tactile_GT = np.empty((1,96,96))
+        tactile_GT = np.empty((1,32,32)) #64,64
 
         sensor_GT = np.empty((1,1,2))
         sensor_pred = np.empty((1,1,2))
@@ -175,7 +175,7 @@ if __name__ == '__main__':
 
             '''save data'''
             if args.exp_data:
-                tactile_GT = np.append(tactile_GT,tactile_frame.cpu().data.numpy().reshape(-1,96,96),axis=0)
+                tactile_GT = np.append(tactile_GT,tactile_frame.cpu().data.numpy().reshape(-1,32,32),axis=0) #64,64
                 sensor_GT = np.append(sensor_GT,sensor.cpu().data.numpy().reshape(-1,1,2),axis=0)
                 sensor_pred =np.append(sensor_pred,sensor.cpu().data.numpy().reshape(-1,1,2),axis=0)
 
@@ -184,7 +184,7 @@ if __name__ == '__main__':
                     toSave = [sensor_GT[1:,:,:], sensor_pred[1:,:,:],
                               tactile_GT[1:,:,:]]
                     pickle.dump(toSave, open(args.exp_dir + 'predictions/data/' + args.ckpt + str(c) + '.p', "wb"))
-                    tactile_GT = np.empty((1,96,96))
+                    tactile_GT = np.empty((1,32,32)) #64,64
                     sensor_GT = np.empty((1,1,2))
                     sensor_pred = np.empty((1, 1, 2))
 
@@ -236,15 +236,13 @@ if __name__ == '__main__':
             optimizer.step()
 
             train_loss.append(loss.data.item())
-
-            if i_batch % 1000 ==0 and i_batch!=0:
-
+            if i_batch % 500 ==0 and i_batch!=0:
                 print("[%d/%d] LR: %.6f, Loss: %.6f, Sensor_loss: %.6f, "
-                      "s_max_gt: %.6f, s_max_pred: %.6f, s_min_gt: %.6f, s_min_pred: %.6f, "
+                      "s_max_gt: %.6f, %.6f, s_max_pred: %.6f, %.6f, s_min_gt: %.6f, %.6f s_min_pred: %.6f, %.6f,"
                       % (
                     i_batch, len(train_dataloader), get_lr(optimizer), loss.item(), loss_sensor,
-                    np.amax(sensor.cpu().data.numpy()), np.amax(sensor_out.cpu().data.numpy()),
-                    np.amin(sensor.cpu().data.numpy()), np.amin(sensor_out.cpu().data.numpy())))
+                    np.amax(sensor.cpu()[:,0].data.numpy()), np.amax(sensor.cpu()[:,1].data.numpy()), np.amax(sensor_out[:,0].cpu().data.numpy()), np.amax(sensor_out[:,1].cpu().data.numpy()),
+                    np.amin(sensor.cpu()[:,0].data.numpy()), np.amin(sensor.cpu()[:,1].data.numpy()), np.amin(sensor_out[:,0].cpu().data.numpy()), np.amin(sensor_out[:,1].cpu().data.numpy())))
 
 
                 torch.save({

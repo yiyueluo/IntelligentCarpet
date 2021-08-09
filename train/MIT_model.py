@@ -31,39 +31,39 @@ class tile2openpose_conv3d(nn.Module):
             nn.LeakyReLU(),
             nn.BatchNorm2d(64),
             nn.MaxPool2d(kernel_size=2)) # 48 * 48
-        # 64*16*16
+        # 64*32*32
 
         self.conv_2 = nn.Sequential(
             nn.Conv2d(64, 128, kernel_size=(3,3),padding=1),
             nn.LeakyReLU(),
             nn.BatchNorm2d(128))
-        #128*16*16
+        #128*32*32
 
         self.conv_3 = nn.Sequential(
             nn.Conv2d(128, 256, kernel_size=(3,3),padding=1),
             nn.LeakyReLU(),
             nn.BatchNorm2d(256),
             nn.MaxPool2d(kernel_size=2)) # 24 * 24
-        #256*8*8
+        #256*16*16
 
         self.conv_4 = nn.Sequential(
             nn.Conv2d(256, 512, kernel_size=(3,3),padding=1),
             nn.LeakyReLU(),
             nn.BatchNorm2d(512))
-        #512*8*8
+        #512*16*16
 
         self.conv_5 = nn.Sequential(
             nn.Conv2d(512, 1024, kernel_size=(5,5)),
             nn.LeakyReLU(),
             nn.BatchNorm2d(1024))
-        #1024*4*4
+        #1024*8*8
 
         self.conv_6 = nn.Sequential(
             nn.Conv2d(1024, 1024, kernel_size=(3,3),padding=1),
             nn.LeakyReLU(),
             nn.BatchNorm2d(1024),
             nn.MaxPool2d(kernel_size=2)) # 10 * 10
-        #1024*2*2
+        #1024*4*4
 
         self.l1 = nn.Sequential(
             nn.Linear(1024*2*2, 512),
@@ -84,20 +84,19 @@ class tile2openpose_conv3d(nn.Module):
         output = self.conv_5(output)
         output = self.conv_6(output)
 
-        output.view(-1, 1024*2*2)
-
+        output = output.view(input.shape[0], 1024*2*2)
         output = self.l1(output)
         output = self.l2(output)
 
-        # print (output.shape)
-        output = output.reshape(output.shape[0],output.shape[1],output.shape[2],output.shape[3],1)
-        output = output.repeat(1,1,1,1,9)
 
-        layer = torch.zeros(output.shape[0], 1, output.shape[2], output.shape[3], output.shape[4]).to(device)
-        for i in range(layer.shape[4]):
-            layer[:,:,:,:,i] = i
-        layer = layer/(layer.shape[4]-1)
-        output = torch.cat( (output,layer), axis=1)
+        # output = output.reshape(output.shape[0],output.shape[1],output.shape[2],output.shape[3],1)
+        # output = output.repeat(1,1,1,1,9)
+        #
+        # layer = torch.zeros(output.shape[0], 1, output.shape[2], output.shape[3], output.shape[4]).to(device)
+        # for i in range(layer.shape[4]):
+        #     layer[:,:,:,:,i] = i
+        # layer = layer/(layer.shape[4]-1)
+        # output = torch.cat( (output,layer), axis=1)
 
         # print (output.shape)
 
