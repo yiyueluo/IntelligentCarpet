@@ -66,11 +66,14 @@ class tile2openpose_conv3d(nn.Module):
         #1024*4*4
 
         self.l1 = nn.Sequential(
-            nn.Linear(1024*2*2, 512),
-            nn.LeakyReLU()
+            nn.Linear(1024*2*2, 512), #for 32*32: nn.Linear(1024*2*2, 512)
+            nn.BatchNorm1d(512),
+            nn.LeakyReLU(),
+            nn.Dropout(0.5)
         )
         self.l2 = nn.Sequential(
-            nn.Linear(512, 2)
+            nn.Linear(512, 2),
+            nn.Dropout(0.5)
         )
 
 
