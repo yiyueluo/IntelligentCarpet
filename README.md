@@ -33,8 +33,9 @@ In each dataset folder, there are:
 5. visualization with Openpose output (only in selective folder for demonstration): webcam#\_openpose.avi
 6. 21 keypoints output by Openpose from each camera: pt_webcam#.mat
 7. triangulated 21 keypoints: keypoint3D.mat
-8. transformed 3D keypoints corresponding to the carpet perspective: keypoint_transform.p, and the positions of the carpet: tile_transform.p
-9. optimized 3D keypoints: keypoint_refined.p
+8. optimized 3D keypoints: keypoint_refined.p
+9. transformed 3D keypoints corresponding to the carpet perspective: keypoint_transform.p, and the positions of the carpet: tile_transform.p
+
 
 In each calibration folder, there are:
 1. calibration parameters for each camera: webcam#\_intrinsic.mat, webcam#\_extrinsic.mat, webcam#\_dis.mat
